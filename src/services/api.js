@@ -1,1 +1,9 @@
-export async function optimizeWithBackend(payload){const response=await fetch('http://localhost:8000/api/optimize',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});if(!response.ok)throw new Error('Backend unavailable');return response.json();}
+export async function optimizeWithBackend(payload) {
+  const response = await fetch("http://localhost:8000/api/optimize", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload),
+  });
+  if (!response.ok) throw new Error("Backend unavailable");
+  return response.json();
+}

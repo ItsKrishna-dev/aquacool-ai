@@ -1,2 +1,33 @@
-const STEPS=['INGESTED','CLASSIFIED','EVALUATING','APPROVED','DISPATCHED','RUNNING','COMPLETED'];
-export default function LifecycleStepper({activeStep=0}){return <div className="lifecycle-stepper" aria-label="Workload automation lifecycle">{STEPS.map((label,index)=><div className="lifecycle-item" key={label}><div className={`lifecycle-node ${index<activeStep?'complete':''} ${index===activeStep?'active':''}`}>{index<activeStep?'✓':index+1}</div><span>{label}</span>{index<STEPS.length-1&&<div className={`lifecycle-line ${index<activeStep?'complete':''}`}/>}</div>)}</div>}
+const STEPS = [
+  "INGESTED",
+  "CLASSIFIED",
+  "EVALUATING",
+  "APPROVED",
+  "DISPATCHED",
+  "RUNNING",
+  "COMPLETED",
+];
+export default function LifecycleStepper({ activeStep = 0 }) {
+  return (
+    <div
+      className="lifecycle-stepper"
+      aria-label="Workload automation lifecycle"
+    >
+      {STEPS.map((label, index) => (
+        <div className="lifecycle-item" key={label}>
+          <div
+            className={`lifecycle-node ${index < activeStep ? "complete" : ""} ${index === activeStep ? "active" : ""}`}
+          >
+            {index < activeStep ? "✓" : index + 1}
+          </div>
+          <span>{label}</span>
+          {index < STEPS.length - 1 && (
+            <div
+              className={`lifecycle-line ${index < activeStep ? "complete" : ""}`}
+            />
+          )}
+        </div>
+      ))}
+    </div>
+  );
+}

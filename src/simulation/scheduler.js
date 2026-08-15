@@ -1,2 +1,82 @@
-export function runScheduler(jobs,environment,capacity){const occupancy=Array(48).fill(0);const scheduled=[];for(const job of jobs){if(!job.flexible||job.priority==='Critical'){for(let h=job.baselineStart;h<job.baselineStart+job.duration;h++)occupancy[h]+=job.cpu;scheduled.push({...job,recommendedStart:job.baselineStart,recommendedStartLabel:formatHour(job.baselineStart),state:'LOCKED_CRITICAL',progress:0,finish:job.baselineStart+job.duration,reason:'Critical workload protected and scheduled immediately.'});continue}const candidates=[];for(let start=0;start+job.duration<=48;start++){if(start+job.duration>job.deadline)continue;if([...Array(job.duration)].some((_,i)=>occupancy[start+i]+job.cpu>capacity))continue;const window=environment.slice(start,start+job.duration);const score=window.reduce((s,row)=>s+row.carbon+row.waterImpact*3,0)+Math.max(0,start-job.baselineStart)*10;candidates.push({score,start})}if(!candidates.length){scheduled.push({...job,recommendedStart:job.baselineStart,recommendedStartLabel:formatHour(job.baselineStart),state:'FALLBACK_BASELINE',progress:0,finish:job.baselineStart+job.duration,reason:'No feasible window met all constraints; baseline retained.'});continue}const start=candidates.sort((a,b)=>a.score-b.score)[0].start;for(let h=start;h<start+job.duration;h++)occupancy[h]+=job.cpu;scheduled.push({...job,recommendedStart:start,recommendedStartLabel:formatHour(start),state:start===job.baselineStart?'APPROVED':'APPROVED',progress:0,finish:start+job.duration,reason:`Selected among ${candidates.length} feasible windows while preserving the deadline.`})}const shifted=scheduled.filter(j=>j.state==='APPROVED'&&j.recommendedStart!==j.baselineStart).length;return{jobs:scheduled,metrics:{carbonReduction:+(shifted*5.9).toFixed(1),waterReduction:+(shifted*7.4).toFixed(1),slaCompliance:100,jobsShifted:shifted,queued:scheduled.filter(j=>j.state==='APPROVED').length,completed:0,blocked:scheduled.filter(j=>j.state.includes('FALLBACK')).length,dispatching:0,peakCpu:Math.max(...occupancy),latencyMs:18+scheduled.length*3}}}
-function formatHour(offset){return new Intl.DateTimeFormat(undefined,{hour:'numeric',minute:'2-digit'}).format(new Date(Date.now()+offset*3600000))}
+export function runScheduler(jobs, environment, capacity) {
+  const occupancy = Array(48).fill(0);
+  const scheduled = [];
+  for (const job of jobs) {
+    if (!job.flexible || job.priority === "Critical") {
+      for (let h = job.baselineStart; h < job.baselineStart + job.duration; h++)
+        occupancy[h] += job.cpu;
+      scheduled.push({
+        ...job,
+        recommendedStart: job.baselineStart,
+        recommendedStartLabel: formatHour(job.baselineStart),
+        state: "LOCKED_CRITICAL",
+        progress: 0,
+        finish: job.baselineStart + job.duration,
+        reason: "Critical workload protected and scheduled immediately.",
+      });
+      continue;
+    }
+    const candidates = [];
+    for (let start = 0; start + job.duration <= 48; start++) {
+      if (start + job.duration > job.deadline) continue;
+      if (
+        [...Array(job.duration)].some(
+          (_, i) => occupancy[start + i] + job.cpu > capacity,
+        )
+      )
+        continue;
+      const window = environment.slice(start, start + job.duration);
+      const score =
+        window.reduce((s, row) => s + row.carbon + row.waterImpact * 3, 0) +
+        Math.max(0, start - job.baselineStart) * 10;
+      candidates.push({ score, start });
+    }
+    if (!candidates.length) {
+      scheduled.push({
+        ...job,
+        recommendedStart: job.baselineStart,
+        recommendedStartLabel: formatHour(job.baselineStart),
+        state: "FALLBACK_BASELINE",
+        progress: 0,
+        finish: job.baselineStart + job.duration,
+        reason: "No feasible window met all constraints; baseline retained.",
+      });
+      continue;
+    }
+    const start = candidates.sort((a, b) => a.score - b.score)[0].start;
+    for (let h = start; h < start + job.duration; h++) occupancy[h] += job.cpu;
+    scheduled.push({
+      ...job,
+      recommendedStart: start,
+      recommendedStartLabel: formatHour(start),
+      state: start === job.baselineStart ? "APPROVED" : "APPROVED",
+      progress: 0,
+      finish: start + job.duration,
+      reason: `Selected among ${candidates.length} feasible windows while preserving the deadline.`,
+    });
+  }
+  const shifted = scheduled.filter(
+    (j) => j.state === "APPROVED" && j.recommendedStart !== j.baselineStart,
+  ).length;
+  return {
+    jobs: scheduled,
+    metrics: {
+      carbonReduction: +(shifted * 5.9).toFixed(1),
+      waterReduction: +(shifted * 7.4).toFixed(1),
+      slaCompliance: 100,
+      jobsShifted: shifted,
+      queued: scheduled.filter((j) => j.state === "APPROVED").length,
+      completed: 0,
+      blocked: scheduled.filter((j) => j.state.includes("FALLBACK")).length,
+      dispatching: 0,
+      peakCpu: Math.max(...occupancy),
+      latencyMs: 18 + scheduled.length * 3,
+    },
+  };
+}
+function formatHour(offset) {
+  return new Intl.DateTimeFormat(undefined, {
+    hour: "numeric",
+    minute: "2-digit",
+  }).format(new Date(Date.now() + offset * 3600000));
+}
