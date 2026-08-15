@@ -1,6 +1,6 @@
 import ProgressBar from '../common/ProgressBar';
+
 export default function AutomationRunConsole({ events, running, step }) {
-  const totalSteps = 6;
-  const progress = Math.min(100, Math.round((step / totalSteps) * 100));
+  const progress = Math.min(100, Math.round((step / 6) * 100));
   return <div className="automation-console"><div className="console-header"><div><b>Automation run console</b><span>{running ? 'Processing workload queue' : 'Last run completed'}</span></div><strong>{progress}%</strong></div><ProgressBar value={progress}/><div className="console-events">{events.slice(-8).map((event,index)=><div key={index}><time>{event.time}</time><span className={event.type}>{event.type === 'done' ? '✓' : '•'}</span>{event.text}</div>)}</div></div>;
 }
