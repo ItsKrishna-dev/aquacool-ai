@@ -26,17 +26,19 @@ The frontend also contains a deterministic fallback scheduler if the FastAPI ser
 
 ## Functional features
 
+- Current-device-time-aware simulation clock with locale-aware formatting.
+- Facility/city profiles that update the environmental profile and workload simulation.
+- Apply Changes flow on Settings.
 - Dynamic workload queue with submission and deletion.
 - Python FastAPI optimization endpoint.
+- Animated optimization run showing queue scan, candidate evaluation, scheduling and metric calculation.
 - Deterministic deadline-safe scheduling.
 - Locked and critical workloads are never postponed.
 - Interactive carbon, water, delay and capacity weights.
 - Dynamic KPI recalculation after optimization.
-- Candidate-window rejection reasons.
-- Job decision inspector with selected window, finish time, environmental scores and SLA status.
-- FIFO versus AquaCool timeline with deadline markers.
-- Dark/light theme with high-contrast data values.
-- Responsive dashboard layout.
+- Human-readable decision inspector and clearer schedule legend.
+- FIFO versus AquaCool timeline with hour axis, NOW marker and deadline markers.
+- Dark theme plus a softer high-contrast light theme.
 
 ## Scope boundary
 
