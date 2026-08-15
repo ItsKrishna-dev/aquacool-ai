@@ -5,9 +5,9 @@ export default function DashboardLayout({ children, page, onNavigate, theme, tog
   return (
     <div className="app-shell" data-theme={theme}>
       <Sidebar page={page} onNavigate={onNavigate} facility={facility} />
-      <main>
+      <main className="app-main">
         <Header page={page} theme={theme} toggleTheme={toggleTheme} onAutomate={onAutomate} running={running} facility={facility} />
-        {children}
+        <section className="page-content">{children}</section>
       </main>
     </div>
   );
