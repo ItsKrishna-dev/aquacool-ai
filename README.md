@@ -1,34 +1,43 @@
-# AquaCool AI — MVP Dashboard
+# AquaCool AI — Functional MVP
 
-A polished, offline React/Vite demonstration of the AquaCool AI concept: water-, energy- and carbon-aware scheduling for a simulated Indian data centre.
+A dynamic prototype for water-, energy- and carbon-aware workload scheduling in a simulated Indian data centre.
 
-## Run locally
+## Run the Python API
+
+```bash
+python -m venv .venv
+source .venv/bin/activate       # Windows: .venv\\Scripts\\activate
+pip install -r backend/requirements.txt
+uvicorn backend.main:app --reload --port 8000
+```
+
+## Run the React dashboard
+
+In a second terminal:
 
 ```bash
 npm install
 npm run dev
 ```
 
-Open the local Vite URL shown in the terminal.
+Open the Vite URL shown in the terminal.
 
-## Included
+The frontend also contains a deterministic fallback scheduler if the FastAPI server is not running.
 
-- Overview dashboard.
-- Environmental Forecast charts.
-- Workload Scheduler table and workload submission form.
-- Deterministic Optimize Schedule action.
-- FIFO versus AquaCool timeline.
-- Job-detail reasoning panel.
-- Optimization and Metrics views.
-- Settings view.
-- Fixed-seed offline demo mode.
-- Critical/non-flexible jobs are never delayed.
-- Flexible jobs remain deadline-protected in the simulated schedule.
+## Functional features
 
-## Important demo disclaimer
+- Dynamic workload queue with submission and deletion.
+- Python FastAPI optimization endpoint.
+- Deterministic deadline-safe scheduling.
+- Locked and critical workloads are never postponed.
+- Interactive carbon, water, delay and capacity weights.
+- Dynamic KPI recalculation after optimization.
+- Candidate-window rejection reasons.
+- Job decision inspector with selected window, finish time, environmental scores and SLA status.
+- FIFO versus AquaCool timeline with deadline markers.
+- Dark/light theme with high-contrast data values.
+- Responsive dashboard layout.
 
-Every chart, KPI and environmental signal is simulated or estimated. This app does not connect to Grid-India, CEA, IMD, CGWB, NITI Aayog, Kubernetes, facility telemetry or any production API. It does not control real workloads or cooling equipment. The reduction percentages are illustrative demo values and are not experimental results.
+## Scope boundary
 
-## Architecture boundary
-
-The frontend contains a deterministic scheduler simulation only. A production implementation would require validated facility telemetry, workload metadata, cooling models, authorized integrations and safety review.
+This is an MVP simulation. It does not connect to production Grid-India, CEA, IMD, CGWB, Kubernetes or facility telemetry, and it does not control real workloads or cooling equipment. Environmental data, workload data and computed impact values are deterministic simulated estimates for demonstration.
