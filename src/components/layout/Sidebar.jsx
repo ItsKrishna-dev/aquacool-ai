@@ -1,15 +1,3 @@
-import { Activity, CloudSun, CalendarClock, SlidersHorizontal, BarChart3, Settings, ShieldCheck } from 'lucide-react';
-import { NAV_ITEMS } from '../../app/constants';
-
-const icons = { Overview: Activity, 'Environmental Forecast': CloudSun, 'Workload Scheduler': CalendarClock, Optimization: SlidersHorizontal, Metrics: BarChart3, Settings };
-
-export default function Sidebar({ page, onNavigate, facility }) {
-  return (
-    <aside className="app-sidebar">
-      <div className="sidebar-brand"><div className="sidebar-logo">A</div><div><b>AquaCool</b><span>{facility.city} CONTROL PLANE</span></div></div>
-      <div className="sidebar-mode">● AUTOMATION READY<small>{facility.city} • {facility.capacity} CPU</small></div>
-      <nav className="sidebar-nav">{NAV_ITEMS.map(item => { const Icon = icons[item]; return <button key={item} className={page === item ? 'active' : ''} onClick={() => onNavigate(item)}><Icon size={17}/><span>{item}</span></button>; })}</nav>
-      <div className="sidebar-note"><ShieldCheck size={18}/><div><b>Guardrails active</b><p>Critical jobs are protected from delay.</p></div></div>
-    </aside>
-  );
-}
+import{Activity,CloudSun,CalendarClock,SlidersHorizontal,BarChart3,Settings,ShieldCheck}from'lucide-react';import{NAV_ITEMS}from'../../app/constants';
+const icons={Overview:Activity,'Environmental Forecast':CloudSun,'Workload Scheduler':CalendarClock,Optimization:SlidersHorizontal,Metrics:BarChart3,Settings};
+export default function Sidebar({page,onNavigate,facility}){return <aside className="app-sidebar"><div className="sidebar-brand"><div className="sidebar-logo">A</div><div><b>AquaCool</b><span>{facility.city} CONTROL PLANE</span></div></div><div className="sidebar-mode">● AUTOMATION READY<small>{facility.city} • {facility.capacity} CPU</small></div><nav className="sidebar-nav">{NAV_ITEMS.map(item=>{const Icon=icons[item];return <button key={item} className={page===item?'active':''} onClick={()=>onNavigate(item)}><Icon size={17}/><span>{item}</span></button>})}</nav><div className="sidebar-note"><ShieldCheck size={18}/><div><b>Guardrails active</b><p>Critical jobs are protected from delay.</p></div></div></aside>}

@@ -1,10 +1,2 @@
-@import './tokens.css';
-@import './themes.css';
-@import './layout.css';
-@import './components.css';
-
-* { box-sizing: border-box; }
-html, body, #root { min-height: 100%; }
-body { margin: 0; font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); }
-button, input, select { font: inherit; }
-button { cursor: pointer; }
+@import './tokens.css';@import './themes.css';@import './layout.css';@import './components.css';
+*{box-sizing:border-box}html,body,#root{min-height:100%;margin:0}body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text)}button,input,select{font:inherit}button{cursor:pointer}
