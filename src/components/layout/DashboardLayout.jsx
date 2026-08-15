@@ -1,0 +1,2 @@
+import Sidebar from './Sidebar';import Header from './Header';
+export default function DashboardLayout({children,page,onNavigate,theme,toggleTheme,facility,onAutomate,running}){return <div className="app-shell"><Sidebar page={page} onNavigate={onNavigate} facility={facility}/><main><Header page={page} theme={theme} toggleTheme={toggleTheme} onAutomate={onAutomate} running={running} facility={facility}/>{children}</main></div>}
