@@ -1,0 +1,2 @@
+import { useEffect, useState } from 'react';
+export function useLiveSimulationClock(){const [running,setRunning]=useState(false);const [speed,setSpeed]=useState(1);const [time,setTime]=useState(0);useEffect(()=>{if(!running)return;const id=setInterval(()=>setTime(t=>(t+speed)%48),1000);return()=>clearInterval(id)},[running,speed]);return{running,speed,time,play:()=>setRunning(true),pause:()=>setRunning(false),toggle:()=>setRunning(v=>!v),setSpeed,reset:()=>{setRunning(false);setTime(0)}}}
